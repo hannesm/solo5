@@ -120,7 +120,14 @@ int virtio_net_xmit_packet(void *data, int len)
     head_buf->extra_flags = 0;
 
     /* The data buf */
-    assert(len <= PKT_BUFFER_LEN);
+    if (len > PKT_BUFFER_LEN) {
+      printf("len(%d) > PKT_BUFFER_LEN(%d)\n", len, PKT_BUFFER_LEN);
+      for (int i = 0 ; i < len ; i++) {
+        printf("%02X", ((char*)data)[i]);
+      }
+      printf("\n");
+      assert(false);
+    }
     memcpy(data_buf->data, data, len);
     data_buf->len = len;
     data_buf->extra_flags = 0;
