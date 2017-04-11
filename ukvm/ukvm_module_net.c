@@ -91,7 +91,6 @@ static int tap_attach(const char *ifname)
      */
     struct ifaddrs *ifa, *ifp;
     int found = 0;
-    int up = 0;
 
     if (getifaddrs(&ifa) == -1)
         return -1;
@@ -99,7 +98,6 @@ static int tap_attach(const char *ifname)
     while (ifp) {
         if (strcmp(ifp->ifa_name, ifname) == 0) {
             found = 1;
-            up = ifp->ifa_flags & (IFF_UP | IFF_RUNNING);
             break;
         }
         ifp = ifp->ifa_next;
@@ -107,10 +105,6 @@ static int tap_attach(const char *ifname)
     freeifaddrs(ifa);
     if (!found) {
         errno = ENOENT;
-        return -1;
-    }
-    if (!up) {
-        errno = ENETDOWN;
         return -1;
     }
 
