@@ -53,6 +53,11 @@ uint64_t tscclock_monotonic(void)
     tsc_delta = tsc_now - tsc_base;
     time_base += mul64_32(tsc_delta, tsc_mult);
     tsc_base = tsc_now;
+    log(INFO, "tssclock_monotonic tsc_now %u << 32 + %u tsc_delta %u << 32 + %u time_base %u << 32 + %u tsc_base %u << 32 + %u\n",
+        (unsigned long)tsc_now >> 32, (unsigned long)tsc_now,
+        (unsigned long)tsc_delta >> 32, (unsigned long)tsc_delta,
+        (unsigned long)time_base >> 32, (unsigned long)time_base,
+        (unsigned long)tsc_base >> 32, (unsigned long)tsc_base);
 
     return time_base;
 }
@@ -102,6 +107,10 @@ int tscclock_init(uint64_t tsc_freq)
     ukvm_do_hypercall(UKVM_HYPERCALL_WALLTIME, &t);
     wc_epochoffset = t.nsecs - time_base;
 
+
+    log(INFO, "tscclock_init with %u << 32 + %u, epochoffset %u << 32 + %u\n",
+        (unsigned long)tsc_freq >> 32, (unsigned long)tsc_freq,
+        (unsigned long)wc_epochoffset >> 32, (unsigned long)wc_epochoffset);
     return 0;
 }
 
@@ -110,5 +119,6 @@ int tscclock_init(uint64_t tsc_freq)
  */
 uint64_t tscclock_epochoffset(void)
 {
+  log(INFO, "epochoffset %u << 32 + %u\n", (unsigned long)wc_epochoffset >> 32, (unsigned long)wc_epochoffset);
 	return wc_epochoffset;
 }
