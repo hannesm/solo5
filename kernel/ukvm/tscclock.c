@@ -77,13 +77,15 @@ uint64_t tscclock_monotonic(void)
  */
 int tscclock_init(uint64_t tsc_freq)
 {
+    uint64_t tmp;
     /*
      * Calculate TSC scaling multiplier.
      *
      * (0.32) tsc_mult = NSEC_PER_SEC (32.32) / tsc_freq (32.0)
      */
 #if defined(__x86_64__)
-    tsc_mult = (NSEC_PER_SEC << 32) / tsc_freq;
+    tmp = (NSEC_PER_SEC << 32) / tsc_freq;
+    tsc_mult = (uint32_t)tmp;
 #elif defined(__aarch64__)
     tsc_mult = NSEC_PER_SEC / tsc_freq;
 #endif
