@@ -82,7 +82,7 @@ static uint64_t time_base;
 static uint64_t tsc_base;
 
 /* Multiplier for converting TSC ticks to nsecs. (0.32) fixed point. */
-static uint32_t tsc_mult;
+static uint64_t tsc_mult;
 
 /*
  * Multiplier for converting nsecs to PIT ticks. (1.32) fixed point.
@@ -179,7 +179,7 @@ uint64_t tscclock_monotonic(void) {
      */
     tsc_now = cpu_rdtsc();
     tsc_delta = tsc_now - tsc_base;
-    time_base += mul64_32(tsc_delta, tsc_mult);
+    time_base += tsc_delta * tsc_mult;
     tsc_base = tsc_now;
 
     return time_base;
@@ -223,7 +223,7 @@ int tscclock_init(void) {
      * Monotonic time begins at tsc_base (first read of TSC before
      * calibration).
      */
-    time_base = mul64_32(tsc_base, tsc_mult);
+    time_base = tsc_base * tsc_mult;
 
     /*
      * Compute RTC epoch offset by subtracting monotonic time_base from RTC

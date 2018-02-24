@@ -32,7 +32,7 @@ static uint64_t time_base;
 static uint64_t tsc_base;
 
 /* Multiplier for converting TSC ticks to nsecs. (0.32) fixed point. */
-static uint32_t tsc_mult;
+static uint64_t tsc_mult;
 
 /* TSC value of current minor frame start */
 static uint64_t current_start = 0;
@@ -50,7 +50,7 @@ uint64_t tscclock_monotonic(void)
         tsc_now = current_start = next_start;
 
     tsc_delta = tsc_now - tsc_base;
-    time_base += mul64_32(tsc_delta, tsc_mult);
+    time_base += tsc_delta * tsc_mult;
     tsc_base = tsc_now;
 
     return time_base;

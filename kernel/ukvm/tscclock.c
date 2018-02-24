@@ -28,13 +28,12 @@ static uint64_t time_base;
 static uint64_t tsc_base;
 
 /* Multiplier for converting TSC ticks to nsecs. (0.32) fixed point. */
-static uint32_t tsc_mult;
+static uint64_t tsc_mult;
 
 #if defined(__x86_64__)
 #define READ_CPU_TICKS cpu_rdtsc
 #elif defined(__aarch64__)
 #define READ_CPU_TICKS cpu_cntvct
-#define mul64_32(a, b) ((a) * (b))
 #else
 #error Unsupported architecture
 #endif
@@ -51,13 +50,8 @@ uint64_t tscclock_monotonic(void)
      */
     tsc_now = READ_CPU_TICKS();
     tsc_delta = tsc_now - tsc_base;
-    time_base += mul64_32(tsc_delta, tsc_mult);
+    time_base += (tsc_delta * tsc_mult);
     tsc_base = tsc_now;
-    log(INFO, "tssclock_monotonic tsc_now %u << 32 + %u tsc_delta %u << 32 + %u time_base %u << 32 + %u tsc_base %u << 32 + %u\n",
-        (unsigned long)tsc_now >> 32, (unsigned long)tsc_now,
-        (unsigned long)tsc_delta >> 32, (unsigned long)tsc_delta,
-        (unsigned long)time_base >> 32, (unsigned long)time_base,
-        (unsigned long)tsc_base >> 32, (unsigned long)tsc_base);
 
     return time_base;
 }
@@ -77,22 +71,13 @@ uint64_t tscclock_monotonic(void)
  */
 int tscclock_init(uint64_t tsc_freq)
 {
-    uint64_t tmp;
     /*
      * Calculate TSC scaling multiplier.
      *
      * (0.32) tsc_mult = NSEC_PER_SEC (32.32) / tsc_freq (32.0)
      */
 #if defined(__x86_64__)
-    tmp = NSEC_PER_SEC << 32;
-    log(INFO, "tscclock_init tmp %u << 32 + %u\n",
-        (unsigned long)tmp >> 32, (unsigned long)tmp);
-    tmp = tmp / tsc_freq;
-    log(INFO, "tscclock_init tmp %u << 32 + %u (tsc_freq %u << 32 + %u)\n",
-        (unsigned long)tmp >> 32, (unsigned long)tmp,
-        (unsigned long)tsc_freq >> 32, (unsigned long)tsc_freq);
-    tsc_mult = (uint32_t)tmp;
-    log(INFO, "tscclock_init tsc_mult %u\n", tsc_mult);
+    tsc_mult = (NSEC_PER_SEC << 32) / tsc_freq;
 #elif defined(__aarch64__)
     tsc_mult = NSEC_PER_SEC / tsc_freq;
 #endif
@@ -102,7 +87,7 @@ int tscclock_init(uint64_t tsc_freq)
      * calibration).
      */
     tsc_base = READ_CPU_TICKS();
-    time_base = mul64_32(tsc_base, tsc_mult);
+    time_base = tsc_base * tsc_mult;
 
     /*
      * Compute wall clock epoch offset by subtracting monotonic time_base from
@@ -117,8 +102,8 @@ int tscclock_init(uint64_t tsc_freq)
     wc_epochoffset = t.nsecs - time_base;
 
 
-    log(INFO, "tscclock_init tsc_mult %u with %u << 32 + %u, epochoffset %u << 32 + %u\n",
-        tsc_mult,
+    log(INFO, "tscclock_init tsc_mult %u << 32 + %u with %u << 32 + %u, epochoffset %u << 32 + %u\n",
+        (unsigned long)tsc_mult >> 32, (unsigned long)tsc_mult,
         (unsigned long)tsc_freq >> 32, (unsigned long)tsc_freq,
         (unsigned long)wc_epochoffset >> 32, (unsigned long)wc_epochoffset);
     return 0;
@@ -129,14 +114,5 @@ int tscclock_init(uint64_t tsc_freq)
  */
 uint64_t tscclock_epochoffset(void)
 {
-    struct ukvm_walltime t;
-    uint64_t ts;
-
-    ts = tscclock_monotonic() + wc_epochoffset;
-    ukvm_do_hypercall(UKVM_HYPERCALL_WALLTIME, &t);
-
-    log(INFO, "ts %u << 32 + %u t.nsecs %u << 32 + %u\n",
-        (unsigned long)ts >> 32, (unsigned long)ts,
-        (unsigned long)t.nsecs >> 32, (unsigned long)t.nsecs);
-    return t.nsecs;
+    return wc_epochoffset;
 }
