@@ -33,5 +33,5 @@ uint64_t solo5_clock_monotonic(void)
 /* return wall time in nsecs */
 uint64_t solo5_clock_wall(void)
 {
-    return tscclock_monotonic() + tscclock_epochoffset();
+    return tscclock_epochoffset();
 }

@@ -119,6 +119,14 @@ int tscclock_init(uint64_t tsc_freq)
  */
 uint64_t tscclock_epochoffset(void)
 {
-  log(INFO, "epochoffset %u << 32 + %u\n", (unsigned long)wc_epochoffset >> 32, (unsigned long)wc_epochoffset);
-	return wc_epochoffset;
+    struct ukvm_walltime t;
+    uint64_t ts;
+
+    ts = tscclock_monotonic() + wc_epochoffset;
+    ukvm_do_hypercall(UKVM_HYPERCALL_WALLTIME, &t);
+
+    log(INFO, "ts %u << 32 + %u t.nsecs %u << 32 + %u\n",
+        (unsigned long)ts >> 32, (unsigned long)ts,
+        (unsigned long)t.nsecs >> 32, (unsigned long)t.nsecs);
+    return t.nsecs;
 }
