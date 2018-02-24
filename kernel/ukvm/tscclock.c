@@ -84,8 +84,15 @@ int tscclock_init(uint64_t tsc_freq)
      * (0.32) tsc_mult = NSEC_PER_SEC (32.32) / tsc_freq (32.0)
      */
 #if defined(__x86_64__)
-    tmp = (NSEC_PER_SEC << 32) / tsc_freq;
+    tmp = NSEC_PER_SEC << 32;
+    log(INFO, "tscclock_init tmp %u << 32 + %u\n",
+        (unsigned long)tmp >> 32, (unsigned long)tmp);
+    tmp = tmp / tsc_freq;
+    log(INFO, "tscclock_init tmp %u << 32 + %u (tsc_freq %u << 32 + %u)\n",
+        (unsigned long)tmp >> 32, (unsigned long)tmp,
+        (unsigned long)tsc_freq >> 32, (unsigned long)tsc_freq);
     tsc_mult = (uint32_t)tmp;
+    log(INFO, "tscclock_init tsc_mult %u\n", tsc_mult);
 #elif defined(__aarch64__)
     tsc_mult = NSEC_PER_SEC / tsc_freq;
 #endif
