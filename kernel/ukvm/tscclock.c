@@ -108,7 +108,8 @@ int tscclock_init(uint64_t tsc_freq)
     wc_epochoffset = t.nsecs - time_base;
 
 
-    log(INFO, "tscclock_init with %u << 32 + %u, epochoffset %u << 32 + %u\n",
+    log(INFO, "tscclock_init tsc_mult %u with %u << 32 + %u, epochoffset %u << 32 + %u\n",
+        tsc_mult,
         (unsigned long)tsc_freq >> 32, (unsigned long)tsc_freq,
         (unsigned long)wc_epochoffset >> 32, (unsigned long)wc_epochoffset);
     return 0;
