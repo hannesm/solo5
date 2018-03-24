@@ -73,7 +73,7 @@ static inline void ukvm_do_hypercall(int n, volatile void *arg)
 }
 #    endif
 
-#elif defined(__aarch64__)
+#else // defined(__aarch64__)
 /*
  * MMIO base address used to dispatch hypercalls.
  * Currently, we have limited the max guest memory size to 4GB, to guarantee
@@ -120,8 +120,8 @@ static inline void ukvm_do_hypercall(int n, volatile void *arg)
 	        : "memory");
 }
 #    endif
-#else
-#    error Unsupported architecture
+//#else
+//#    error Unsupported architecture
 #endif
 
 /*

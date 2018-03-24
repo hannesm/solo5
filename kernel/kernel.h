@@ -32,10 +32,10 @@
 
 #ifdef __x86_64__
 #include "cpu_x86_64.h"
-#elif defined(__aarch64__)
+#else // defined(__aarch64__)
 #include "cpu_aarch64.h"
-#else
-#error Unsupported architecture
+//#else
+//#error Unsupported architecture
 #endif
 
 /* alignment macros */

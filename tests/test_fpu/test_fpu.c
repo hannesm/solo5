@@ -44,7 +44,7 @@ int solo5_app_main(const struct solo5_start_info *si __attribute__((unused)))
          : "m" (c)
          : "xmm1"
     );
-#elif defined(__aarch64__)
+#else //if defined(__aarch64__)
     __asm__(
         "ldr d0, %0\n"
         "ldr d1, %0\n"
@@ -53,8 +53,8 @@ int solo5_app_main(const struct solo5_start_info *si __attribute__((unused)))
         : "=m" (c)
         : "m" (c)
     );
-#else
-#error Unsupported architecture
+//#else
+//#error Unsupported architecture
 #endif
 
     a = 1.5;

@@ -32,11 +32,12 @@ static uint32_t tsc_mult;
 
 #if defined(__x86_64__)
 #define READ_CPU_TICKS cpu_rdtsc
-#elif defined(__aarch64__)
+//#elif defined(__aarch64__)
+#else
 #define READ_CPU_TICKS cpu_cntvct
 #define mul64_32(a, b) ((a) * (b))
-#else
-#error Unsupported architecture
+//#else
+//#error Unsupported architecture
 #endif
 
 /*
