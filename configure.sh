@@ -83,7 +83,7 @@ case $(uname -s) in
         # XXX: This breaks MirageOS in (at least) the build of mirage-solo5 due
         # to -fno-pie breaking the build of lib/dllmirage-solo5_bindings.so.
         # Keep this disabled until that is resolved.
-        # cc_has_pie && HOST_CFLAGS="${HOST_CFLAGS} -fno-pie"
+        cc_has_pie && HOST_CFLAGS="${HOST_CFLAGS} -fno-pie"
         # Same for the stack protector, no robust way to detect if this is on by
         # default so always disable it.
         HOST_CFLAGS="${HOST_CFLAGS} -fno-stack-protector"
