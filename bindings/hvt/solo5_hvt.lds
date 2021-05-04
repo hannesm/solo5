@@ -130,6 +130,8 @@ SECTIONS {
         *(COMMON)
     }
 
+    . += CONSTANT(MAXPAGESIZE);
+    . += CONSTANT(MAXPAGESIZE);
     . = ALIGN(CONSTANT(MAXPAGESIZE));
     _ebss = .;
     _end = .;
