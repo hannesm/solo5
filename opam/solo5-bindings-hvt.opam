@@ -12,8 +12,9 @@ dev-repo: "git+https://github.com/solo5/solo5.git"
 build: [
   ["./configure.sh"]
   [make "V=1" "CONFIG_SPT=" "CONFIG_VIRTIO=" "CONFIG_MUEN=" "CONFIG_GENODE=" "CONFIG_XEN="]
+  ["sh" "packaging/FreeBSD/create_package.sh"] {os = "freebsd"}
+  ["sh" "packaging/debian/create_package.sh"] {os-family = "debian"}
 ]
-install: [make "V=1" "CONFIG_SPT=" "CONFIG_VIRTIO=" "CONFIG_MUEN=" "CONFIG_GENODE=" "CONFIG_XEN=" "install-opam-hvt" "PREFIX=%{prefix}%"]
 depends: [
   "conf-pkg-config"
   "conf-libseccomp" {build & os = "linux"}

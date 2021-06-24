@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: solo5
+Upstream-Contact: Robur Team <team@robur.coop>
+Source: https://github.com/solo5/solo5
+
+Files: *
+Copyright: "Dan Williams <djwillia@us.ibm.com>" "Martin Lucina <martin@lucina.net>" "Ricardo Koller <kollerr@us.ibm.com>"
+License: ISC
