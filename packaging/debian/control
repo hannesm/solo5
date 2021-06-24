@@ -1,0 +1,20 @@
+Package: solo5-hvt
+Version: 0.6.8
+Section: unknown
+Priority: optional
+Maintainer: Robur Team <team@robur.coop>
+Standards-Version: 4.4.1
+Homepage: https://github.com/solo5/solo5
+Vcs-Browser: https://github.com/solo5/solo5
+Vcs-Git: https://github.com/solo5/solo5.git
+Architecture: all
+Description: Solo5 sandboxed execution environment (hvt target)
+  Solo5 is a sandboxed execution environment primarily intended
+  for, but not limited to, running applications built using various
+  unikernels (a.k.a.  library operating systems).
+  This package provides the Solo5 components needed to build and
+  run MirageOS unikernels on the "hvt" target, including the
+  "solo5-hvt" tender source code, and "solo5-hvt-configure" script
+  used to specialize the tender at MirageOS unikernel build time.
+  The "hvt" target is supported on 64-bit Linux, FreeBSD and
+  OpenBSD systems with hardware virtualization.

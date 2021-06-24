@@ -1,0 +1,16 @@
+name:         solo5-hvt
+version:      %%VERSION_NUM%%
+origin:	      local/solo5-hvt
+comment:      Solo5 hardware virtualized tender
+www:	      https://github.com/solo5/solo5
+maintainer:   Robur <team@robur.coop>
+prefix:	      /usr/local
+licenselogic: single
+licenses:     [ISC]
+flatsize:     %%FLATSIZE%%
+categories:   [local]
+
+desc = <<EOD
+Solo5 sandboxed execution environment (hvt target)
+
+EOD;
