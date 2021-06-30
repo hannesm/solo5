@@ -28,3 +28,4 @@ install $basedir/packaging/debian/copyright $debiandir/copyright
 
 dpkg-deb --build $rootdir $basedir/solo5-hvt.deb
 echo 'bin: [ "solo5-hvt.deb" ]' > $basedir/solo5-bindings-hvt.install
+echo 'doc: [ "README.md" ]' >> $basedir/solo5-bindings-hvt.install
