@@ -39,6 +39,6 @@ sed -e "s:%%FLATSIZE%%:${flatsize}:" "$pdir/MANIFEST" > "$manifest"
 
 export SOURCE_DATE_EPOCH=$(git log -1 --pretty=format:%ct)
 pkg create -r "$rootdir" -M "$manifest" -o $basedir/
-mv $basedir/solo5-hvt-*.txz $basedir/solo5-hvt.txz
-echo 'bin: [ "solo5-hvt.txz" ]' > $basedir/solo5-bindings-hvt.install
+mv $basedir/solo5-hvt-*.pkg $basedir/solo5-hvt.pkg
+echo 'bin: [ "solo5-hvt.pkg" ]' > $basedir/solo5-bindings-hvt.install
 echo 'doc: [ "README.md" ]' >> $basedir/solo5-bindings-hvt.install
