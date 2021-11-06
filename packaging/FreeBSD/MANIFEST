@@ -1,5 +1,5 @@
 name:         solo5-hvt
-version:      %%VERSION_NUM%%
+version:      0.6.8
 origin:	      local/solo5-hvt
 comment:      Solo5 hardware virtualized tender
 www:	      https://github.com/solo5/solo5
